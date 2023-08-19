@@ -21,4 +21,6 @@ export class Book {
   status: string;
 }
 
-export const BooksSchema = SchemaFactory.createForClass(Book);
+export const BooksSchema = SchemaFactory.createForClass(Book)
+  .set('versionKey', false)
+  .set('id', false);
