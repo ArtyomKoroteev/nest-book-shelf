@@ -7,9 +7,10 @@ import { CreateBookDto } from './dto/book-create.dto';
 @Injectable()
 export class BooksService {
   constructor(@InjectModel(Book.name) private bookModel: Model<Book>) {}
-  create(createBookDto: CreateBookDto): Promise<CreateBookDto> {
+  async create(createBookDto: CreateBookDto): Promise<Book> {
     const doc = new this.bookModel(createBookDto);
-    return doc.save();
+    const book = await doc.save();
+    return book;
   }
 
   async getAllBooks(): Promise<CreateBookDto[]> {
@@ -17,18 +18,10 @@ export class BooksService {
   }
 
   async updateBook(postId: string, bookData: CreateBookDto): Promise<void> {
-    await this.bookModel.findByIdAndUpdate(
-      {
-        _id: postId,
-      },
-      {
-        bookData,
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
+    await this.bookModel.findByIdAndUpdate(postId, bookData, {
+      new: true,
+      runValidators: true,
+    });
   }
 
   async getBook(id: string): Promise<CreateBookDto> {

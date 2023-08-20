@@ -19,8 +19,7 @@ export class BooksController {
   async createBook(
     @Body()
     bookData: CreateBookDto,
-  ): Promise<CreateBookDto> {
-    console.log(bookData, 'bookData');
+  ) {
     const book = await this.booksService.create(bookData);
     return book;
   }
