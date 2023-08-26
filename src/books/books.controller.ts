@@ -31,7 +31,7 @@ export class BooksController {
     @Body()
     bookData: CreateBookDto,
   ) {
-    this.booksService.updateBook(id, bookData);
+    return this.booksService.updateBook(id, bookData);
   }
 
   @Get()

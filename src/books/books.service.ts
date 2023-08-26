@@ -8,20 +8,40 @@ import { CreateBookDto } from './dto/book-create.dto';
 export class BooksService {
   constructor(@InjectModel(Book.name) private bookModel: Model<Book>) {}
   async create(createBookDto: CreateBookDto): Promise<Book> {
-    const doc = new this.bookModel(createBookDto);
-    const book = await doc.save();
-    return book;
+    try {
+      const doc = new this.bookModel(createBookDto);
+      const book = await doc.save();
+      return book;
+    } catch (error) {
+      throw new HttpException(`Book was not added ${error}`, 400);
+    }
   }
 
   async getAllBooks(): Promise<CreateBookDto[]> {
-    return this.bookModel.find().exec();
+    try {
+      return this.bookModel.find().exec();
+    } catch (error) {
+      throw new HttpException(`Book was not found ${error}`, 400);
+    }
   }
 
-  async updateBook(postId: string, bookData: CreateBookDto): Promise<void> {
-    await this.bookModel.findByIdAndUpdate(postId, bookData, {
-      new: true,
-      runValidators: true,
-    });
+  async updateBook(
+    postId: string,
+    bookData: CreateBookDto,
+  ): Promise<CreateBookDto> {
+    try {
+      const updatedBook = await this.bookModel.findByIdAndUpdate(
+        postId,
+        bookData,
+        {
+          new: true,
+          runValidators: true,
+        },
+      );
+      return updatedBook;
+    } catch (error) {
+      throw new HttpException(`Cant update book ${error}`, 400);
+    }
   }
 
   async getBook(id: string): Promise<CreateBookDto> {

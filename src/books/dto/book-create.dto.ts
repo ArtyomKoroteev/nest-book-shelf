@@ -10,13 +10,13 @@ export enum BookStatus {
 export class CreateBookDto {
   @ApiProperty()
   @IsString()
-  @MaxLength(30)
+  @MaxLength(50)
   @IsNotEmpty()
   name: string;
 
   @ApiProperty()
   @IsString()
-  @MaxLength(30)
+  @MaxLength(128)
   @IsNotEmpty()
   author: string;
 
