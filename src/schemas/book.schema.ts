@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { BookStatus } from 'src/books/dto/book-create.dto';
 
 export type BookDocument = HydratedDocument<Book>;
 
@@ -12,13 +13,19 @@ export class Book {
   name: string;
 
   @Prop()
+  author: string;
+
+  @Prop()
   description: string;
 
   @Prop()
   rating: number;
 
   @Prop()
-  status: string;
+  status: BookStatus;
 }
 
-export const BooksSchema = SchemaFactory.createForClass(Book);
+export const BooksSchema = SchemaFactory.createForClass(Book).set(
+  'versionKey',
+  false,
+);

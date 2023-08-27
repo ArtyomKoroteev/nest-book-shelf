@@ -1,7 +1,16 @@
-import { Controller, Delete, Get, Body, Patch, Post } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Body,
+  Patch,
+  Post,
+  Param,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/book-create.dto';
+import { UpdateBookDto } from './dto/book-update.dto';
 
 @Controller('books')
 @ApiTags('Books')
@@ -11,15 +20,19 @@ export class BooksController {
   async createBook(
     @Body()
     bookData: CreateBookDto,
-  ): Promise<CreateBookDto> {
-    console.log(bookData, 'bookData');
+  ) {
     const book = await this.booksService.create(bookData);
     return book;
   }
 
   @Patch(':id')
-  updateBook(): string {
-    return 'update book by id';
+  updateBook(
+    @Param('id')
+    id: string,
+    @Body()
+    bookData: UpdateBookDto,
+  ) {
+    return this.booksService.updateBook(id, bookData);
   }
 
   @Get()
@@ -29,12 +42,12 @@ export class BooksController {
   }
 
   @Get(':id')
-  getBookById(): string {
-    return 'get book by id';
+  async getBookById(@Param('id') id: string): Promise<CreateBookDto> {
+    return await this.booksService.getBook(id);
   }
 
   @Delete(':id')
-  deleteBook(): string {
-    return 'delete book by id';
+  async deleteBook(@Param('id') id: string): Promise<void> {
+    await this.booksService.deleteBook(id);
   }
 }

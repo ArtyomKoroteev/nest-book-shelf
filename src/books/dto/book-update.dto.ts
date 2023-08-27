@@ -1,24 +1,13 @@
 import { IsEnum, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { BookStatus } from './book-create.dto';
 
-export enum BookStatus {
-  read = 'read',
-  inProgress = 'in progress',
-  toRead = 'to read',
-}
-
-export class CreateBookDto {
+export class UpdateBookDto {
   @ApiProperty()
   @IsString()
   @MaxLength(50)
   @IsNotEmpty()
   name: string;
-
-  @ApiProperty()
-  @IsString()
-  @MaxLength(128)
-  @IsNotEmpty()
-  author: string;
 
   @ApiProperty()
   @IsString()
