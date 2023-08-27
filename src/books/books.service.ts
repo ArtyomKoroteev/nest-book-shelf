@@ -18,7 +18,7 @@ export class BooksService {
     }
   }
 
-  async getAllBooks(): Promise<CreateBookDto[]> {
+  async getAllBooks(): Promise<Book[]> {
     try {
       return this.bookModel.find().exec();
     } catch (error) {
@@ -26,10 +26,7 @@ export class BooksService {
     }
   }
 
-  async updateBook(
-    postId: string,
-    bookData: UpdateBookDto,
-  ): Promise<CreateBookDto> {
+  async updateBook(postId: string, bookData: UpdateBookDto) {
     try {
       const updatedBook = await this.bookModel.findByIdAndUpdate(
         postId,
@@ -45,7 +42,7 @@ export class BooksService {
     }
   }
 
-  async getBook(id: string): Promise<CreateBookDto> {
+  async getBook(id: string): Promise<Book> {
     const book = await this.bookModel.findById(id);
     if (!book) {
       throw new HttpException(`Can't find book ${id}`, 404);
