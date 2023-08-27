@@ -3,6 +3,7 @@ import { Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Book } from '../schemas/book.schema';
 import { CreateBookDto } from './dto/book-create.dto';
+import { UpdateBookDto } from './dto/book-update.dto';
 
 @Injectable()
 export class BooksService {
@@ -27,7 +28,7 @@ export class BooksService {
 
   async updateBook(
     postId: string,
-    bookData: CreateBookDto,
+    bookData: UpdateBookDto,
   ): Promise<CreateBookDto> {
     try {
       const updatedBook = await this.bookModel.findByIdAndUpdate(

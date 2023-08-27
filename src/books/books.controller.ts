@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/book-create.dto';
+import { UpdateBookDto } from './dto/book-update.dto';
 
 @Controller('books')
 @ApiTags('Books')
@@ -29,7 +30,7 @@ export class BooksController {
     @Param('id')
     id: string,
     @Body()
-    bookData: CreateBookDto,
+    bookData: UpdateBookDto,
   ) {
     return this.booksService.updateBook(id, bookData);
   }
