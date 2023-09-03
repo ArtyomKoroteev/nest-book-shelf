@@ -6,25 +6,29 @@ import {
   Patch,
   Post,
   Param,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/book-create.dto';
 import { UpdateBookDto } from './dto/book-update.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('books')
 @ApiTags('Books')
+@ApiBearerAuth('jwt')
 export class BooksController {
   constructor(private booksService: BooksService) {}
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   async createBook(
     @Body()
     bookData: CreateBookDto,
   ) {
-    const book = await this.booksService.create(bookData);
-    return book;
+    return this.booksService.create(bookData);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   updateBook(
     @Param('id')
@@ -37,8 +41,7 @@ export class BooksController {
 
   @Get()
   async getBooks(): Promise<CreateBookDto[]> {
-    const books = await this.booksService.getAllBooks();
-    return books;
+    return await this.booksService.getAllBooks();
   }
 
   @Get(':id')
@@ -46,6 +49,7 @@ export class BooksController {
     return await this.booksService.getBook(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   async deleteBook(@Param('id') id: string): Promise<void> {
     await this.booksService.deleteBook(id);
