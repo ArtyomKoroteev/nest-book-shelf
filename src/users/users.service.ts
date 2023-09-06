@@ -4,6 +4,7 @@ import { User } from 'src/schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from 'src/auth/constants';
 
 @Injectable()
 export class UsersService {
@@ -32,9 +33,10 @@ export class UsersService {
     const token = await this.jwtService.signAsync(
       {
         userId: user.id,
+        userName: user.fullName,
       },
       {
-        secret: 'secret 123',
+        secret: jwtConstants.secret,
       },
     );
 
@@ -61,9 +63,10 @@ export class UsersService {
     const token = await this.jwtService.signAsync(
       {
         userId: user.id,
+        userName: user.fullName,
       },
       {
-        secret: 'secret 123',
+        secret: jwtConstants.secret,
       },
     );
 

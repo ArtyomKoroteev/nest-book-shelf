@@ -30,7 +30,9 @@ export class CreateBookDto {
   @IsNotEmpty()
   rating: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: BookStatus,
+  })
   @IsEnum(BookStatus)
   @IsNotEmpty()
   status: BookStatus;
