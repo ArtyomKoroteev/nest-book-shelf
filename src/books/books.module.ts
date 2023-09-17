@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { BooksController } from './books.controller';
 import { BooksService } from './books.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BooksSchema } from 'src/schemas/book.schema';
+import { BooksSchema, Book } from 'src/schemas/book.schema';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
 
@@ -11,7 +11,9 @@ import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
   providers: [BooksService, JwtStrategy],
   controllers: [BooksController],
   imports: [
-    MongooseModule.forFeature([{ name: 'Book', schema: BooksSchema }]),
+    // TODO please note Book.name better than just string 'Book'
+    // MongooseModule.forFeature([{ name: 'Book', schema: BooksSchema }]),
+    MongooseModule.forFeature([{ name: Book.name, schema: BooksSchema }]),
     PassportModule,
   ],
 })
