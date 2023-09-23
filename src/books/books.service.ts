@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Book } from '../schemas/book.schema';
 import { CreateBookDto } from './dto/book-create.dto';
 import { UpdateBookDto } from './dto/book-update.dto';
+import { throwBookNotFound } from './utils/errors-builder';
 
 @Injectable()
 export class BooksService {
@@ -45,7 +46,9 @@ export class BooksService {
   async getBook(id: string): Promise<Book> {
     const book = await this.bookModel.findById(id);
     if (!book) {
-      throw new HttpException(`Can't find book ${id}`, 404);
+      // TODO please note better way to handle http errors
+      throwBookNotFound(id);
+      // throw new HttpException(`Can't find book ${id}`, 404);
     }
     return book;
   }
