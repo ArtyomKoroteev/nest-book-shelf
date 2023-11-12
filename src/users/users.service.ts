@@ -4,7 +4,8 @@ import { User } from 'src/schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from 'src/auth/constants';
+import { CreateUserDto } from 'src/auth/dto/user-create.dto';
+import { UserAuthResponseDto } from 'src/auth/dto/response/user-auth-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,11 +14,7 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async createUser(createUserDto: {
-    fullName: string;
-    password: string;
-    email: string;
-  }) {
+  async createUser(createUserDto: CreateUserDto): Promise<UserAuthResponseDto> {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(createUserDto.password, salt);
 
@@ -33,16 +30,16 @@ export class UsersService {
     const token = await this.jwtService.signAsync(
       {
         userId: user.id,
-        userName: user.fullName,
+        fullName: user.fullName,
       },
       {
-        secret: jwtConstants.secret,
+        secret: process.env.JWT_SECRET,
       },
     );
 
     return {
       token,
-      userName: user.fullName,
+      fullName: user.fullName,
       email: user.email,
     };
   }
@@ -63,16 +60,16 @@ export class UsersService {
     const token = await this.jwtService.signAsync(
       {
         userId: user.id,
-        userName: user.fullName,
+        fullName: user.fullName,
       },
       {
-        secret: jwtConstants.secret,
+        secret: process.env.JWT_SECRET,
       },
     );
 
     return {
       token,
-      userName: user.fullName,
+      fullName: user.fullName,
       email: user.email,
     };
   }

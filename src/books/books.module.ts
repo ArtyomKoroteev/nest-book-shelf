@@ -11,8 +11,6 @@ import { JwtStrategy } from 'src/auth/strategies/jwt.strategy';
   providers: [BooksService, JwtStrategy],
   controllers: [BooksController],
   imports: [
-    // TODO please note Book.name better than just string 'Book'
-    // MongooseModule.forFeature([{ name: 'Book', schema: BooksSchema }]),
     MongooseModule.forFeature([{ name: Book.name, schema: BooksSchema }]),
     PassportModule,
   ],

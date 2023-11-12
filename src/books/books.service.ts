@@ -46,14 +46,16 @@ export class BooksService {
   async getBook(id: string): Promise<Book> {
     const book = await this.bookModel.findById(id);
     if (!book) {
-      // TODO please note better way to handle http errors
       throwBookNotFound(id);
-      // throw new HttpException(`Can't find book ${id}`, 404);
     }
     return book;
   }
 
   async deleteBook(bookId: string) {
-    await this.bookModel.findOneAndDelete({ _id: bookId });
+    try {
+      await this.bookModel.findOneAndDelete({ _id: bookId });
+    } catch (e: unknown) {
+      throwBookNotFound(bookId);
+    }
   }
 }
