@@ -49,7 +49,7 @@ export class BooksController {
     status: 401,
     description: 'User Unauthorized',
   })
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   async createBook(@Body() bookData: CreateBookDto) {
     return this.booksService.create(bookData);
@@ -63,7 +63,7 @@ export class BooksController {
     name: 'id',
     description: 'ID of the book to be updated.',
   })
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   updateBook(@Param('id') id: string, @Body() bookData: UpdateBookDto) {
     return this.booksService.updateBook(id, bookData);
@@ -86,7 +86,7 @@ export class BooksController {
     name: 'id',
     description: 'ID of the book',
   })
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async getBookById(@Param('id') id: string): Promise<CreateBookDto> {
     return await this.booksService.getBook(id);
@@ -100,7 +100,7 @@ export class BooksController {
     name: 'id',
     description: 'ID of the book to be deleted.',
   })
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   async deleteBook(@Param('id') id: string): Promise<void> {
     await this.booksService.deleteBook(id);
