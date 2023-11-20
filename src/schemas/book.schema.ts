@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 export type BookDocument = HydratedDocument<Book>;
 
-// please add next auto generated fields: createdAt and updatedAt
 @Schema()
 export class Book {
   @Prop({ type: String, default: uuidv4() })
