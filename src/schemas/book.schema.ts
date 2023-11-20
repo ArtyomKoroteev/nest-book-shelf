@@ -1,18 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Types } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 import { BookStatus } from 'src/books/dto/book-create.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 export type BookDocument = HydratedDocument<Book>;
 
-// please add next auto generated fields: createdAt and updatedAt
 @Schema()
 export class Book {
-  @Prop()
-  // TODO it isn't string, it's ObjectId from mongoose library. if you want use string need provide default value with library uuid, example below
-  id: Types.ObjectId;
-
-  // @Prop({ type: String, default: uuidv4() })
-  // _id: string;
+  @Prop({ type: String, default: uuidv4() })
+  _id: string;
 
   @Prop()
   name: string;
@@ -28,6 +24,12 @@ export class Book {
 
   @Prop()
   status: BookStatus;
+
+  @Prop({ default: Date.now() })
+  createdAt: Date;
+
+  @Prop({ default: Date.now() })
+  updatedAt: Date;
 }
 
 export const BooksSchema = SchemaFactory.createForClass(Book).set(
