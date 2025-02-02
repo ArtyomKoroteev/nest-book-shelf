@@ -61,6 +61,7 @@ export class UsersService {
       {
         userId: user.id,
         fullName: user.fullName,
+        role: user.role,
       },
       {
         secret: process.env.JWT_SECRET,
@@ -71,6 +72,7 @@ export class UsersService {
       token,
       fullName: user.fullName,
       email: user.email,
+      role: user.role,
     };
   }
 }

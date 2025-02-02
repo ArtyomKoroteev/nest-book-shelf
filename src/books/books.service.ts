@@ -5,10 +5,14 @@ import { Book } from '../schemas/book.schema';
 import { CreateBookDto } from './dto/book-create.dto';
 import { UpdateBookDto } from './dto/book-update.dto';
 import { throwBookNotFound } from './utils/errors-builder';
-
+import { AzureBlobService } from 'src/azure-blob/azure-blob.service';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class BooksService {
-  constructor(@InjectModel(Book.name) private bookModel: Model<Book>) {}
+  constructor(
+    @InjectModel(Book.name) private bookModel: Model<Book>,
+    private azureBlobService: AzureBlobService,
+  ) {}
   async create(createBookDto: CreateBookDto): Promise<Book> {
     try {
       const doc = new this.bookModel(createBookDto);
@@ -57,5 +61,19 @@ export class BooksService {
     } catch (e: unknown) {
       throwBookNotFound(bookId);
     }
+  }
+
+  async uploadToBlob(file: Express.Multer.File) {
+    const blobName = uuidv4() as string;
+    await this.azureBlobService.setBlobData(
+      'books-storage',
+      blobName,
+      file.buffer,
+    );
+    return blobName;
+  }
+
+  async getBlobUrl(blobName: string): Promise<string> {
+    return this.azureBlobService.getBlobUrl('books-storage', blobName);
   }
 }
